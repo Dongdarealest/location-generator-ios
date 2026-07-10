@@ -54,3 +54,26 @@ async function runGenerator() {
     // Kết thúc thành công (Màu xanh lá)
     await Terminal.success("Shadowrocket module generated!");
 }
+
+// LOGIC TỰ ĐỘNG ĐÓNG GÓI VĂN BẢN THÀNH FILE .SGMODULE ĐỂ TẢI VỀ IPHONE
+document.addEventListener("click", (e) => {
+    if (e.target && e.target.id === "downloadModuleButton") {
+        const content = document.getElementById("generatedFile").textContent;
+        if (!content) {
+            alert("No module content to download yet. Please generate first!");
+            return;
+        }
+        
+        const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        
+        a.href = url;
+        a.download = "ios-location-spoofer.sgmodule";
+        document.body.appendChild(a);
+        a.click();
+        
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+});
