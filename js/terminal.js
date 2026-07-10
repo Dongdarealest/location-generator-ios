@@ -2,13 +2,15 @@ const Terminal = {
 
     output: null,
 
+    speed: 18,
+
     init() {
 
         this.output = document.getElementById("terminalOutput");
 
     },
 
-    clear() {
+    async reset() {
 
         if (!this.output) {
 
@@ -20,7 +22,7 @@ const Terminal = {
 
     },
 
-    print(text, className = "") {
+    async write(text, className = "") {
 
         if (!this.output) {
 
@@ -32,35 +34,89 @@ const Terminal = {
 
         line.className = "terminal-line " + className;
 
-        line.textContent = "> " + text;
-
         this.output.appendChild(line);
+
+        const prefix = "> ";
+
+        for (let i = 0; i < prefix.length; i++) {
+
+            line.textContent += prefix[i];
+
+            await this.sleep(this.speed);
+
+        }
+
+        for (let i = 0; i < text.length; i++) {
+
+            line.textContent += text[i];
+
+            await this.sleep(this.speed);
+
+        }
 
         this.output.scrollTop = this.output.scrollHeight;
 
-    },
-
-    printInfo(text) {
-
-        this.print(text, "terminal-info");
+        await this.sleep(180);
 
     },
 
-    printSuccess(text) {
+    async progress(title) {
 
-        this.print(text, "terminal-success");
+        await this.write(title, "terminal-info");
+
+        const line = document.createElement("div");
+
+        line.className = "terminal-line";
+
+        this.output.appendChild(line);
+
+        for (let i = 0; i <= 20; i++) {
+
+            line.textContent =
+
+                "[" +
+
+                "█".repeat(i) +
+
+                "░".repeat(20 - i) +
+
+                "]";
+
+            await this.sleep(45);
+
+        }
+
+        await this.sleep(150);
 
     },
 
-    printWarning(text) {
+    async info(text) {
 
-        this.print(text, "terminal-warning");
+        await this.write(text, "terminal-info");
 
     },
 
-    printError(text) {
+    async success(text) {
 
-        this.print(text, "terminal-error");
+        await this.write("✓ " + text, "terminal-success");
+
+    },
+
+    async warning(text) {
+
+        await this.write("! " + text, "terminal-warning");
+
+    },
+
+    async error(text) {
+
+        await this.write("✕ " + text, "terminal-error");
+
+    },
+
+    sleep(ms) {
+
+        return new Promise(resolve => setTimeout(resolve, ms));
 
     }
 
