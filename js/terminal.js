@@ -1,7 +1,6 @@
 const Terminal = {
     output: null,
-    baseSpeed: 15, // Tốc độ gõ chữ cơ bản (ms)
-    queue: Promise.resolve(), // Hàng đợi để ép các dòng phải xếp hàng chạy tuần tự
+    queue: Promise.resolve(), // Hàng đợi bắt buộc các lệnh phải chạy tuần tự
 
     init() {
         this.output = document.getElementById("terminal");
@@ -15,10 +14,9 @@ const Terminal = {
             this.init();
         }
         this.output.innerHTML = "";
-        this.queue = Promise.resolve(); // Reset lại hàng đợi
+        this.queue = Promise.resolve(); // Khởi tạo lại hàng đợi sạch
     },
 
-    // Hàm đứng sau quản lý việc xếp hàng gõ chữ
     async enqueue(action) {
         this.queue = this.queue.then(async () => {
             await action();
@@ -26,41 +24,36 @@ const Terminal = {
         return this.queue;
     },
 
-    async write(text, className = "") {
-        // Ép dòng lệnh này phải vào hàng đợi xếp hàng
+    // Hàm xuất dòng lệnh xuất hiện ngay lập tức nhưng có nhịp phản hồi của máy tính
+    async write(text, className = "", delayBeforeNext = 150) {
         return this.enqueue(async () => {
             if (!this.output) this.init();
 
             const line = document.createElement("div");
             line.className = "terminal-line typing " + className;
+            line.textContent = "> " + text;
             this.output.appendChild(line);
-
-            const prefix = "> ";
-            for (let i = 0; i < prefix.length; i++) {
-                line.textContent += prefix[i];
-                await this.sleep(this.baseSpeed);
-            }
-
-            for (let i = 0; i < text.length; i++) {
-                line.textContent += text[i];
-                // Độ trễ ngẫu nhiên tạo cảm giác phần cứng xử lý thật
-                await this.sleep(this.baseSpeed + Math.random() * 20);
-            }
-
-            line.classList.remove("typing");
-            this.output.scrollTop = this.output.scrollHeight;
             
-            // Khoảng nghỉ ngắn giữa các dòng lệnh (từ 0.25 đến 0.5 giây) để trông thật hơn
-            await this.sleep(250 + Math.random() * 250);
+            this.output.scrollTop = this.output.scrollHeight;
+
+            // Giữ con trỏ nhấp nháy một chút rồi tắt đi
+            await this.sleep(delayBeforeNext);
+            line.classList.remove("typing");
         });
     },
 
+    // Thanh % tiến trình chạy giật cục thực tế mà bạn thích
     async progress(title) {
         return this.enqueue(async () => {
             if (!this.output) this.init();
             
-            await this.write(title, "terminal-info");
+            // Hiện tiêu đề thanh tiến trình
+            const infoLine = document.createElement("div");
+            infoLine.className = "terminal-line terminal-info";
+            infoLine.textContent = "> " + title;
+            this.output.appendChild(infoLine);
 
+            // Tạo dòng chạy %
             const line = document.createElement("div");
             line.className = "terminal-line typing";
             this.output.appendChild(line);
@@ -77,10 +70,10 @@ const Terminal = {
 
                 this.output.scrollTop = this.output.scrollHeight;
 
-                // Giả lập thanh tiến trình bị khựng lại ngẫu nhiên ở một số đoạn nạp dữ liệu
-                let progressDelay = 30 + Math.random() * 40;
-                if (current === 4 || current === 11 || current === 17) {
-                    progressDelay = 300 + Math.random() * 200; 
+                // Giữ nguyên logic khựng ngẫu nhiên của thanh progress làm bạn thích
+                let progressDelay = 20 + Math.random() * 30;
+                if (current === 5 || current === 12 || current === 18) {
+                    progressDelay = 250 + Math.random() * 200; 
                 }
 
                 await this.sleep(progressDelay);
@@ -88,24 +81,27 @@ const Terminal = {
             }
 
             line.classList.remove("typing");
-            await this.sleep(150);
+            await this.sleep(100);
         });
     },
 
+    // Các hàm helper gọi lệnh với nhịp độ trễ khác nhau để tạo cảm giác thật
     async info(text) {
-        await this.write(text, "terminal-info");
+        // Các dòng thông báo hệ thống xuất hiện nhanh, nghỉ 100ms
+        await this.write(text, "terminal-info", 100);
     },
 
     async success(text) {
-        await this.write("✓ " + text, "terminal-success");
+        // Dòng trạng thái thành công, nghỉ 150ms
+        await this.write("✓ " + text, "terminal-success", 150);
     },
 
     async warning(text) {
-        await this.write("! " + text, "terminal-warning");
+        await this.write("! " + text, "terminal-warning", 200);
     },
 
     async error(text) {
-        await this.write("✕ " + text, "terminal-error");
+        await this.write("✕ " + text, "terminal-error", 200);
     },
 
     sleep(ms) {
