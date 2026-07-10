@@ -15,16 +15,17 @@ const Geocoder = {
     },
 
     async fromCoordinate(text) {
+        // Xóa sạch dấu ngoặc trước khi tách vĩ độ, kinh độ
+        text = text.replace(/[\(\)\[\]]/g, '').trim(); 
+        
         const parts = text.split(",");
-        const lat = parseFloat(parts[0]);
-        const lon = parseFloat(parts[1]);
         return {
             success: true,
             type: "coordinate",
             name: "Custom Coordinates",
-            lat: lat,
-            lon: lon,
-            longitude: lon // Phòng hờ MapManager dùng tên này
+            lat: parseFloat(parts[0]),
+            lon: parseFloat(parts[1]),
+            longitude: parseFloat(parts[1])
         };
     },
 
