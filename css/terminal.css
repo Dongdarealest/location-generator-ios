@@ -1,0 +1,69 @@
+.terminal {
+    margin-top: 35px;
+    margin-bottom: 35px;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0d1117;
+}
+
+.terminal-header {
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8b949e;
+    letter-spacing: .5px;
+}
+
+.terminal-output {
+    min-height: 220px;
+    padding: 18px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+    color: #3fb950;
+    white-space: pre-wrap;
+    overflow-y: auto;
+    line-height: 1.8;
+}
+
+.terminal-output::after {
+    content: "▋";
+    animation: blink 1s infinite;
+    color: #58a6ff;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.terminal-line {
+    margin-bottom: 6px;
+}
+
+.terminal-success {
+    color: #3fb950;
+}
+
+.terminal-warning {
+    color: #d29922;
+}
+
+.terminal-error {
+    color: #f85149;
+}
+
+.terminal-info {
+    color: #58a6ff;
+}
