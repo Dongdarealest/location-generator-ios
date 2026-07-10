@@ -3,13 +3,13 @@ window.addEventListener("DOMContentLoaded", () => {
     const input = document.getElementById("locationInput");
     const button = document.getElementById("generateButton");
 
-    button.addEventListener("click", generate);
+    button.addEventListener("click", runGenerator);
 
     input.addEventListener("keydown", (event) => {
 
         if (event.key === "Enter") {
 
-            generate();
+            runGenerator();
 
         }
 
@@ -17,22 +17,36 @@ window.addEventListener("DOMContentLoaded", () => {
 
 });
 
-function generate() {
+async function runGenerator() {
 
-    Terminal.clear();
+    const input = document.getElementById("locationInput");
 
-    Terminal.printInfo("Initializing...");
+    const value = input.value.trim();
 
-    setTimeout(() => {
+    await Terminal.reset();
 
-        Terminal.printInfo("Reading input...");
+    if (!value) {
 
-    }, 500);
+        await Terminal.error("No input detected.");
 
-    setTimeout(() => {
+        return;
 
-        Terminal.printSuccess("Waiting for Geocoder...");
+    }
 
-    }, 1000);
+    await Terminal.info("Initializing...");
+
+    await Terminal.success("Engine Ready");
+
+    await Terminal.info("Reading input...");
+
+    await Terminal.success(value);
+
+    await Terminal.info("Detecting input type...");
+
+    await Terminal.success("Coming in Sprint 1.2");
+
+    await Terminal.progress("Preparing Generator");
+
+    await Terminal.success("Ready.");
 
 }
