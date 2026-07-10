@@ -23,7 +23,7 @@ async function runGenerator() {
         return;
     }
 
-    // 1. Nhận lệnh và quét mạng
+    // 1. Nhận lệnh và quét mạng (Màu xanh dương)
     await Terminal.info(`Fetching data for: "${value}"`);
     
     const result = await Geocoder.search(value);
@@ -36,12 +36,12 @@ async function runGenerator() {
         return;
     }
 
-    // 2. Xuất thông tin cốt lõi
-    await Terminal.success(`Location resolved: ${result.name}`);
-    await Terminal.success(`Coordinates found: ${result.lat}, ${result.lon}`);
+    // 2. Xuất thông tin kết quả (Dùng hàm .data để chuyển sang màu Vàng)
+    await Terminal.data(`Location resolved: ${result.name}`);
+    await Terminal.data(`Coordinates found: ${result.lat}, ${result.lon}`);
     await Terminal.sleep(150);
 
-    // 3. Biên dịch module
+    // 3. Biên dịch module (Màu xanh dương)
     await Terminal.info("Compiling ios-location-spoofer.sgmodule...");
     await Terminal.progress("Building template");
 
@@ -51,5 +51,6 @@ async function runGenerator() {
     MapManager.update(result);
     
     await Terminal.sleep(100);
+    // Kết thúc thành công (Màu xanh lá)
     await Terminal.success("Shadowrocket module generated!");
 }
