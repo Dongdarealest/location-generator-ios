@@ -30,10 +30,10 @@ const Geocoder = {
 
     async fromPlace(query) {
         try {
-            // Sửa lỗi nối chuỗi URL chuẩn theo file config.js
+            // Sửa lỗi nối chuỗi URL chính xác
             const url = `${CONFIG.GEOCODER.URL}?q=${encodeURIComponent(query)}&format=${CONFIG.GEOCODER.FORMAT}&limit=${CONFIG.GEOCODER.LIMIT}`;
 
-            // Thêm Header User-Agent bắt buộc để OpenStreetMap không chặn (Lỗi 403)
+            // *** PHẦN QUAN TRỌNG NHẤT: Thêm Headers User-Agent để không bị máy chủ OpenStreetMap chặn ***
             const response = await fetch(url, {
                 headers: {
                     'User-Agent': 'LocationGeneratorIOS/1.0 (MobileBrowser)'
@@ -62,7 +62,7 @@ const Geocoder = {
                 name: data[0].display_name,
                 lat: Number(data[0].lat),
                 lon: Number(data[0].lon),
-                longitude: Number(data[0].lon) // Khai báo cả lon và longitude để tránh lỗi đồng bộ
+                longitude: Number(data[0].lon) // Thêm kinh độ dự phòng
             };
         }
         catch (e) {
