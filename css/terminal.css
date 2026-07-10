@@ -1,37 +1,36 @@
-/* Biến thẻ #terminal gốc thành một hộp Terminal hoàn chỉnh */
 .terminal {
-    margin-top: 35px;
-    margin-bottom: 35px;
+    margin-top: 25px;
+    margin-bottom: 25px;
     border: 1px solid #30363d;
     border-radius: 12px;
     overflow: hidden;
     background: #0d1117;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     
-    /* Thiết lập cho phần hiển thị chữ */
-    min-height: 220px;
-    padding: 18px;
+    /* CỐ ĐỊNH CHIỀU CAO: Giúp Terminal gọn gàng, không đẩy giao diện xuống quá sâu */
+    height: 180px; 
+    padding: 14px;
     font-family: "JetBrains Mono", monospace;
-    font-size: 14px;
+    font-size: 13px;
     white-space: pre-wrap;
-    overflow-y: auto;
-    line-height: 1.8;
+    overflow-y: auto; /* Kích hoạt cuộn tự động bên trong hộp terminal */
+    line-height: 1.6;
+    scroll-behavior: smooth;
 }
 
-/* Định dạng từng dòng lệnh được sinh ra */
+/* Định dạng chung từng dòng */
 .terminal-line {
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     word-break: break-all;
+    color: #c9d1d9; /* Màu chữ mặc định (Trắng xám) */
 }
 
-/* --- TẠO CON TRỎ NHẤP NHÁY ĐỘNG BÁM THEO CHỮ --- */
-/* Class 'typing' được sinh ra từ file terminal.js của bạn sẽ kích hoạt hiệu ứng này */
+/* Hiệu ứng con trỏ nhấp nháy động bám chữ */
 .terminal-line.typing::after {
     content: "▋";
     animation: blink 0.8s step-end infinite;
     margin-left: 4px;
-    font-size: 13px;
-    vertical-align: baseline;
+    font-size: 12px;
 }
 
 @keyframes blink {
@@ -39,23 +38,30 @@
     50% { opacity: 1; }
 }
 
-/* --- ĐỊNH DẠNG MÀU SẮC ĐỒNG BỘ CHO CHỮ VÀ CON TRỎ --- */
+/* --- PHÂN TÁCH MÀU SẮC ĐẲNG CẤP TERMINAL --- */
+
+/* Dòng thông tin hệ thống [SYS], [NET], [IO]: Màu xanh cyan công nghệ */
+.terminal-info {
+    color: #58a6ff;
+}
+
+/* Dòng trạng thái thành công (✓): Màu xanh lá mượt mà */
 .terminal-success {
     color: #3fb950;
-    text-shadow: 0 0 4px rgba(63, 185, 80, 0.3);
+    text-shadow: 0 0 4px rgba(63, 185, 80, 0.2);
+}
+
+/* LÀM NỔI BẬT DỮ LIỆU: Đổi màu cho các dòng chứa kết quả biến số thực tế */
+/* Hệ thống tự động nhận diện các dòng success chứa tọa độ/tên để đổi sang màu cam vàng xịn */
+.terminal-success:not(:contains("ready")):not(:contains("successfully")) {
+    color: #f2cc60; 
+    text-shadow: 0 0 4px rgba(242, 204, 96, 0.2);
 }
 
 .terminal-warning {
     color: #d29922;
-    text-shadow: 0 0 4px rgba(210, 153, 34, 0.3);
 }
 
 .terminal-error {
     color: #f85149;
-    text-shadow: 0 0 4px rgba(248, 81, 73, 0.3);
-}
-
-.terminal-info {
-    color: #58a6ff;
-    text-shadow: 0 0 4px rgba(88, 166, 255, 0.3);
 }
