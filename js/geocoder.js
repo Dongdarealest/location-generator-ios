@@ -1,60 +1,42 @@
 const Geocoder = {
 
     async search(query) {
-
         const input = Utils.detectInputType(query);
-
         switch (input.type) {
-
             case "coordinate":
-
                 return this.fromCoordinate(query);
-
             case "google":
-
                 return this.fromGoogle(query);
-
             case "apple":
-
                 return this.fromApple(query);
-
             default:
-
                 return this.fromPlace(query);
-
         }
-
     },
 
     async fromCoordinate(text) {
-
         const parts = text.split(",");
-
+        const lat = parseFloat(parts[0]);
+        const lon = parseFloat(parts[1]);
         return {
-
             success: true,
-
             type: "coordinate",
-
             name: "Custom Coordinates",
-
-            lat: parseFloat(parts[0]),
-
-            lon: parseFloat(parts[1])
-
+            lat: lat,
+            lon: lon,
+            longitude: lon // Phòng hờ MapManager dùng tên này
         };
-
     },
 
     async fromPlace(query) {
         try {
-            // 1. Sửa lại cách nối chuỗi URL chính xác theo file config.js
+            // Sửa lỗi nối chuỗi URL chuẩn theo file config.js
             const url = `${CONFIG.GEOCODER.URL}?q=${encodeURIComponent(query)}&format=${CONFIG.GEOCODER.FORMAT}&limit=${CONFIG.GEOCODER.LIMIT}`;
 
-            // 2. Thêm Header User-Agent để không bị OpenStreetMap chặn
+            // Thêm Header User-Agent bắt buộc để OpenStreetMap không chặn (Lỗi 403)
             const response = await fetch(url, {
                 headers: {
-                    'User-Agent': 'LocationGeneratorIOS/1.0 (contact: github-username)' // Thay github-username bằng tên github của bạn nếu muốn
+                    'User-Agent': 'LocationGeneratorIOS/1.0 (MobileBrowser)'
                 }
             });
 
@@ -79,7 +61,8 @@ const Geocoder = {
                 type: "place",
                 name: data[0].display_name,
                 lat: Number(data[0].lat),
-                lon: Number(data[0].lon)
+                lon: Number(data[0].lon),
+                longitude: Number(data[0].lon) // Khai báo cả lon và longitude để tránh lỗi đồng bộ
             };
         }
         catch (e) {
@@ -88,134 +71,80 @@ const Geocoder = {
                 message: e.message
             };
         }
-    },,
+    },
 
     async fromGoogle(url) {
+        try {
+            let lat = null;
+            let lon = null;
+            const at = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
 
-    try {
-
-        let lat = null;
-
-        let lon = null;
-
-        const at = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
-
-        if (at) {
-
-            lat = Number(at[1]);
-
-            lon = Number(at[2]);
-
-        }
-
-        if (lat === null) {
-
-            const u = new URL(url);
-
-            const q = u.searchParams.get("q");
-
-            if (q && Utils.isCoordinate(q)) {
-
-                const p = q.split(",");
-
-                lat = Number(p[0]);
-
-                lon = Number(p[1]);
-
+            if (at) {
+                lat = Number(at[1]);
+                lon = Number(at[2]);
             }
 
-        }
+            if (lat === null) {
+                const u = new URL(url);
+                const q = u.searchParams.get("q");
+                if (q && Utils.isCoordinate(q)) {
+                    const p = q.split(",");
+                    lat = Number(p[0]);
+                    lon = Number(p[1]);
+                }
+            }
 
-        if (lat === null) {
+            if (lat === null) {
+                return {
+                    success: false,
+                    message: "Google Maps URL doesn't contain coordinates."
+                };
+            }
 
             return {
-
-                success: false,
-
-                message: "Google Maps URL doesn't contain coordinates."
-
+                success: true,
+                type: "google",
+                name: "Google Maps",
+                lat,
+                lon,
+                longitude: lon
             };
-
         }
-
-        return {
-
-            success: true,
-
-            type: "google",
-
-            name: "Google Maps",
-
-            lat,
-
-            lon
-
-        };
-
-    }
-
-    catch {
-
-        return {
-
-            success: false,
-
-            message: "Invalid Google Maps URL."
-
-        };
-
-    }
-
-},
+        catch {
+            return {
+                success: false,
+                message: "Invalid Google Maps URL."
+            };
+        }
+    },
 
     async fromApple(url) {
-
-    try {
-
-        const u = new URL(url);
-
-        const ll = u.searchParams.get("ll");
-
-        if (!ll) {
-
+        try {
+            const u = new URL(url);
+            const ll = u.searchParams.get("ll");
+            if (!ll) {
+                return {
+                    success: false,
+                    message: "Apple Maps URL doesn't contain coordinates."
+                };
+            }
+            const parts = ll.split(",");
+            const lat = Number(parts[0]);
+            const lon = Number(parts[1]);
             return {
-
-                success: false,
-
-                message: "Apple Maps URL doesn't contain coordinates."
-
+                success: true,
+                type: "apple",
+                name: "Apple Maps",
+                lat: lat,
+                lon: lon,
+                longitude: lon
             };
-
         }
-
-        const parts = ll.split(",");
-
-        return {
-
-            success: true,
-
-            type: "apple",
-
-            name: "Apple Maps",
-
-            lat: Number(parts[0]),
-
-            lon: Number(parts[1])
-
-        };
-
+        catch {
+            return {
+                success: false,
+                message: "Invalid Apple Maps URL."
+            };
+        }
     }
-
-    catch {
-
-        return {
-
-            success: false,
-
-            message: "Invalid Apple Maps URL."
-
-        };
-
-    }
-
-},
+};
