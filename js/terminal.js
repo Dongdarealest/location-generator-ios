@@ -1,7 +1,7 @@
 const Terminal = {
-
     output: null,
-    baseSpeed: 16, // Tốc độ gõ cơ bản
+    baseSpeed: 15, // Tốc độ gõ chữ cơ bản (ms)
+    queue: Promise.resolve(), // Hàng đợi để ép các dòng phải xếp hàng chạy tuần tự
 
     init() {
         this.output = document.getElementById("terminal");
@@ -15,70 +15,81 @@ const Terminal = {
             this.init();
         }
         this.output.innerHTML = "";
+        this.queue = Promise.resolve(); // Reset lại hàng đợi
+    },
+
+    // Hàm đứng sau quản lý việc xếp hàng gõ chữ
+    async enqueue(action) {
+        this.queue = this.queue.then(async () => {
+            await action();
+        });
+        return this.queue;
     },
 
     async write(text, className = "") {
-        if (!this.output) {
-            this.init();
-        }
+        // Ép dòng lệnh này phải vào hàng đợi xếp hàng
+        return this.enqueue(async () => {
+            if (!this.output) this.init();
 
-        const line = document.createElement("div");
-        // Thêm class 'typing' để CSS tạo hiệu ứng con trỏ nhấp nháy cho dòng đang chạy
-        line.className = "terminal-line typing " + className;
-        this.output.appendChild(line);
+            const line = document.createElement("div");
+            line.className = "terminal-line typing " + className;
+            this.output.appendChild(line);
 
-        const prefix = "> ";
-        for (let i = 0; i < prefix.length; i++) {
-            line.textContent += prefix[i];
-            await this.sleep(this.baseSpeed);
-        }
+            const prefix = "> ";
+            for (let i = 0; i < prefix.length; i++) {
+                line.textContent += prefix[i];
+                await this.sleep(this.baseSpeed);
+            }
 
-        for (let i = 0; i < text.length; i++) {
-            line.textContent += text[i];
-            // TẠO ĐỘ TRỄ NGẪU NHIÊN: Giúp chữ chạy lúc nhanh lúc chậm cực kỳ thật
-            const randomDelay = this.baseSpeed + Math.random() * 25;
-            await this.sleep(randomDelay);
-        }
+            for (let i = 0; i < text.length; i++) {
+                line.textContent += text[i];
+                // Độ trễ ngẫu nhiên tạo cảm giác phần cứng xử lý thật
+                await this.sleep(this.baseSpeed + Math.random() * 20);
+            }
 
-        // Chạy xong dòng nào thì xóa class 'typing' để tắt con trỏ nhấp nháy ở dòng đó
-        line.classList.remove("typing");
-        this.output.scrollTop = this.output.scrollHeight;
-        
-        // Trễ ngẫu nhiên một chút trước khi kết thúc lệnh để chuyển sang dòng tiếp theo
-        await this.sleep(200 + Math.random() * 200);
+            line.classList.remove("typing");
+            this.output.scrollTop = this.output.scrollHeight;
+            
+            // Khoảng nghỉ ngắn giữa các dòng lệnh (từ 0.25 đến 0.5 giây) để trông thật hơn
+            await this.sleep(250 + Math.random() * 250);
+        });
     },
 
     async progress(title) {
-        await this.write(title, "terminal-info");
+        return this.enqueue(async () => {
+            if (!this.output) this.init();
+            
+            await this.write(title, "terminal-info");
 
-        const line = document.createElement("div");
-        line.className = "terminal-line typing"; // Thêm con trỏ cho thanh progress
-        this.output.appendChild(line);
+            const line = document.createElement("div");
+            line.className = "terminal-line typing";
+            this.output.appendChild(line);
 
-        let current = 0;
-        const total = 20;
+            let current = 0;
+            const total = 20;
 
-        while (current <= total) {
-            line.textContent =
-                "[" +
-                "█".repeat(current) +
-                "░".repeat(total - current) +
-                "] " + Math.floor((current / total) * 100) + "%"; // Hiện thêm số % cho thật
+            while (current <= total) {
+                line.textContent =
+                    "[" +
+                    "█".repeat(current) +
+                    "░".repeat(total - current) +
+                    "] " + Math.floor((current / total) * 100) + "%";
 
-            this.output.scrollTop = this.output.scrollHeight;
+                this.output.scrollTop = this.output.scrollHeight;
 
-            // GIẢ LẬP ĐỘ TRỄ TIẾN TRÌNH: Tạo các đoạn khựng ngẫu nhiên (ví dụ đến 40% hoặc 85% bị đứng hình 1 nhịp)
-            let progressDelay = 30 + Math.random() * 50;
-            if (current === 5 || current === 14 || current === 18) {
-                progressDelay = 250 + Math.random() * 300; // Khựng lại từ 0.2 - 0.5 giây
+                // Giả lập thanh tiến trình bị khựng lại ngẫu nhiên ở một số đoạn nạp dữ liệu
+                let progressDelay = 30 + Math.random() * 40;
+                if (current === 4 || current === 11 || current === 17) {
+                    progressDelay = 300 + Math.random() * 200; 
+                }
+
+                await this.sleep(progressDelay);
+                current++;
             }
 
-            await this.sleep(progressDelay);
-            current++;
-        }
-
-        line.classList.remove("typing");
-        await this.sleep(200);
+            line.classList.remove("typing");
+            await this.sleep(150);
+        });
     },
 
     async info(text) {
