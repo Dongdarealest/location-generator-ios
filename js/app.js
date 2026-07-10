@@ -1,5 +1,7 @@
 window.addEventListener("DOMContentLoaded", () => {
 
+    MapManager.init();
+
     const input = document.getElementById("locationInput");
     const button = document.getElementById("generateButton");
 
@@ -64,6 +66,8 @@ async function runGenerator() {
 
     document.getElementById("generatedFile").textContent = generated;
 
-    await Terminal.success("Ready");
+    MapManager.update(result);
+
+    await Terminal.success("Generator Complete");
 
 }
