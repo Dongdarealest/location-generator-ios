@@ -1,35 +1,35 @@
 .terminal {
     margin-top: 25px;
     margin-bottom: 25px;
-    border: 1px solid #30363d;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #0d1117;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid #30363d !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    background: #0d1117 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
     
-    /* Chiều cao cố định gọn gàng để lộ phần lấy module bên dưới */
-    height: 180px; 
-    padding: 14px;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 13px;
-    white-space: pre-wrap;
-    overflow-y: auto;
-    line-height: 1.7;
-    scroll-behavior: smooth;
+    /* Chiều cao cố định gọn gàng */
+    height: 180px !important; 
+    padding: 14px !important;
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 13px !important;
+    white-space: pre-wrap !important;
+    overflow-y: auto !important;
+    line-height: 1.7 !important;
+    scroll-behavior: smooth !important;
 }
 
 .terminal-line {
-    margin-bottom: 5px;
-    word-break: break-all;
-    color: #c9d1d9; /* Màu chữ mặc định (Trắng xám) */
+    margin-bottom: 5px !important;
+    word-break: break-all !important;
+    color: #c9d1d9 !important; /* Màu trắng xám mặc định */
 }
 
 /* Hiệu ứng con trỏ nhấp nháy động bám chữ */
 .terminal-line.typing::after {
-    content: "▋";
-    animation: blink 0.8s step-end infinite;
-    margin-left: 4px;
-    font-size: 12px;
+    content: "▋" !important;
+    animation: blink 0.8s step-end infinite !important;
+    margin-left: 4px !important;
+    font-size: 12px !important;
 }
 
 @keyframes blink {
@@ -37,24 +37,24 @@
     50% { opacity: 1; }
 }
 
-/* --- ĐỊNH NGHĨA MÀU SẮC PHÂN CHIA HỆ THỐNG --- */
+/* --- ÉP MÀU HỆ THỐNG TUYỆT ĐỐI --- */
 .terminal-info {
-    color: #58a6ff; /* Màu xanh dương công nghệ */
+    color: #58a6ff !important; /* Buộc phải ra màu Xanh dương */
 }
 
 .terminal-success {
-    color: #3fb950; /* Màu xanh lá hoàn tất */
+    color: #3fb950 !important; /* Buộc phải ra màu Xanh lá */
 }
 
 .terminal-data {
-    color: #f2cc60; /* Màu vàng hoàng kim làm nổi bật tọa độ / địa danh */
-    text-shadow: 0 0 4px rgba(242, 204, 96, 0.15);
+    color: #f2cc60 !important; /* Buộc phải ra màu Vàng hoàng kim */
+    text-shadow: 0 0 4px rgba(242, 204, 96, 0.2) !important;
 }
 
 .terminal-warning {
-    color: #d29922;
+    color: #d29922 !important;
 }
 
 .terminal-error {
-    color: #f85149;
+    color: #f85149 !important;
 }
