@@ -34,6 +34,37 @@ async function runGenerator() {
     }
 
     await Terminal.info("Initializing...");
+    await Terminal.success("Engine Ready");
+
+    await Terminal.info("Reading input...");
+    await Terminal.success(value);
+
+    await Terminal.info("Searching OpenStreetMap...");
+
+    const result = await Geocoder.search(value);
+
+    if (!result.success) {
+
+        await Terminal.error(result.message);
+
+        return;
+
+    }
+
+    await Terminal.success(result.name);
+
+    await Terminal.info("Latitude");
+    await Terminal.success(result.lat.toString());
+
+    await Terminal.info("Longitude");
+    await Terminal.success(result.lon.toString());
+
+    await Terminal.progress("Preparing Generator");
+
+    await Terminal.success("Ready");
+
+}
+    await Terminal.info("Initializing...");
 
     await Terminal.success("Engine Ready");
 
