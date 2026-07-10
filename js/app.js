@@ -20,7 +20,6 @@ window.addEventListener("DOMContentLoaded", () => {
 async function runGenerator() {
 
     const input = document.getElementById("locationInput");
-
     const value = input.value.trim();
 
     await Terminal.reset();
@@ -39,7 +38,7 @@ async function runGenerator() {
     await Terminal.info("Reading input...");
     await Terminal.success(value);
 
-    await Terminal.info("Searching OpenStreetMap...");
+    await Terminal.info("Searching location...");
 
     const result = await Geocoder.search(value);
 
@@ -61,23 +60,10 @@ async function runGenerator() {
 
     await Terminal.progress("Preparing Generator");
 
+    const generated = Template.build(result);
+
+    document.getElementById("generatedFile").textContent = generated;
+
     await Terminal.success("Ready");
-
-}
-    await Terminal.info("Initializing...");
-
-    await Terminal.success("Engine Ready");
-
-    await Terminal.info("Reading input...");
-
-    await Terminal.success(value);
-
-    await Terminal.info("Detecting input type...");
-
-    await Terminal.success("Coming in Sprint 1.2");
-
-    await Terminal.progress("Preparing Generator");
-
-    await Terminal.success("Ready.");
 
 }
