@@ -6,9 +6,9 @@ const CONFIG = {
 
         URL: "https://nominatim.openstreetmap.org/search",
 
-        LIMIT: 1,
+        FORMAT: "jsonv2",
 
-        FORMAT: "jsonv2"
+        LIMIT: 1
 
     },
 
