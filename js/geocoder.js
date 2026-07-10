@@ -4,9 +4,9 @@ const Geocoder = {
 
         return {
 
-            type: "unknown",
+            success: false,
 
-            value: query
+            message: "Geocoder not implemented."
 
         };
 
