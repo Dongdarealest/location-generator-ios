@@ -47,60 +47,48 @@ const Geocoder = {
     },
 
     async fromPlace(query) {
-
         try {
+            // 1. Sửa lại cách nối chuỗi URL chính xác theo file config.js
+            const url = `${CONFIG.GEOCODER.URL}?q=${encodeURIComponent(query)}&format=${CONFIG.GEOCODER.FORMAT}&limit=${CONFIG.GEOCODER.LIMIT}`;
 
-            const url =
-                CONFIG.GEOCODER.URL +
-                "?q=" +
-                encodeURIComponent(query) +
-                "&format=jsonv2&limit=1";
+            // 2. Thêm Header User-Agent để không bị OpenStreetMap chặn
+            const response = await fetch(url, {
+                headers: {
+                    'User-Agent': 'LocationGeneratorIOS/1.0 (contact: github-username)' // Thay github-username bằng tên github của bạn nếu muốn
+                }
+            });
 
-            const response = await fetch(url);
+            if (!response.ok) {
+                return {
+                    success: false,
+                    message: `API Error: ${response.status}`
+                };
+            }
 
             const data = await response.json();
 
-            if (!data.length) {
-
+            if (!data || !data.length) {
                 return {
-
                     success: false,
-
                     message: "Location not found."
-
                 };
-
             }
 
             return {
-
                 success: true,
-
                 type: "place",
-
                 name: data[0].display_name,
-
                 lat: Number(data[0].lat),
-
                 lon: Number(data[0].lon)
-
             };
-
         }
-
         catch (e) {
-
             return {
-
                 success: false,
-
                 message: e.message
-
             };
-
         }
-
-    },
+    },,
 
     async fromGoogle(url) {
 
