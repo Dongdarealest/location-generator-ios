@@ -6,7 +6,7 @@ const Terminal = {
 
     init() {
 
-        this.output = document.getElementById("terminalOutput");
+        this.output = document.getElementById("terminal");
 
     },
 
