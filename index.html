@@ -2,46 +2,35 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Location Generator iOS</title>
 
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/terminal.css">
-    <link rel="stylesheet" href="css/mobile.css">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Leaflet -->
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
 </head>
 
 <body>
 
-    <main class="container">
+    <div class="container">
 
-        <header>
+        <h1>Location Generator iOS</h1>
 
-            <h1>Location Generator iOS</h1>
-
-            <p>
-                Generate Shadowrocket Location Spoofer Module
-            </p>
-
-        </header>
-
-        <section class="search">
-
-            <label>
-
-                Search Location or Coordinates
-
-            </label>
+        <div class="input-area">
 
             <input
                 id="locationInput"
                 type="text"
-                placeholder="New York, Tokyo Tower, 35.68,139.76 ...">
+                placeholder="Enter location, coordinates, Google Maps or Apple Maps URL">
 
             <button id="generateButton">
 
@@ -49,82 +38,26 @@
 
             </button>
 
-            <small>
+        </div>
 
-                Supports place names, coordinates, Google Maps and Apple Maps links.
+        <div id="terminal" class="terminal"></div>
 
-            </small>
+        <div id="map"></div>
 
-        </section>
+        <h2>Generated Module</h2>
 
-        <section class="terminal">
+        <pre id="generatedFile"></pre>
 
-            <div class="terminal-header">
+    </div>
 
-                TERMINAL
-
-            </div>
-
-            <div
-                id="terminalOutput"
-                class="terminal-output">
-
-            </div>
-
-        </section>
-
-        <section class="preview">
-
-            <div class="preview-title">
-
-                Generated Module
-
-            </div>
-
-            <pre id="generatedFile">
-
-Waiting...
-
-            </pre>
-
-        </section>
-
-        <section class="actions">
-
-            <button id="copyButton">
-
-                Copy
-
-            </button>
-
-            <button id="downloadButton">
-
-                Download
-
-            </button>
-
-            <button id="shareButton">
-
-                Share
-
-            </button>
-
-        </section>
-
-        <footer>
-
-            Version 1.0.0
-
-        </footer>
-
-    </main>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
     <script src="js/terminal.js"></script>
     <script src="js/geocoder.js"></script>
     <script src="js/template.js"></script>
     <script src="js/map.js"></script>
-    <script src="js/utils.js"></script>
     <script src="js/app.js"></script>
 
 </body>
