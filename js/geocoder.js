@@ -2,42 +2,61 @@ const Geocoder = {
 
     async search(query) {
 
+        const input = Utils.detectInputType(query);
+
+        switch (input.type) {
+
+            case "coordinate":
+
+                return this.fromCoordinate(query);
+
+            case "google":
+
+                return this.fromGoogle(query);
+
+            case "apple":
+
+                return this.fromApple(query);
+
+            default:
+
+                return this.fromPlace(query);
+
+        }
+
+    },
+
+    async fromCoordinate(text) {
+
+        const parts = text.split(",");
+
+        return {
+
+            success: true,
+
+            type: "coordinate",
+
+            name: "Custom Coordinates",
+
+            lat: parseFloat(parts[0]),
+
+            lon: parseFloat(parts[1])
+
+        };
+
+    },
+
+    async fromPlace(query) {
+
         try {
-
-            if (Utils.isCoordinate(query)) {
-
-                const parts = query.split(",");
-
-                return {
-
-                    success: true,
-
-                    type: "coordinate",
-
-                    name: "Custom Coordinates",
-
-                    lat: parseFloat(parts[0]),
-
-                    lon: parseFloat(parts[1])
-
-                };
-
-            }
 
             const url =
                 CONFIG.GEOCODER.URL +
                 "?q=" +
                 encodeURIComponent(query) +
-                "&format=" +
-                CONFIG.GEOCODER.FORMAT +
-                "&limit=" +
-                CONFIG.GEOCODER.LIMIT;
+                "&format=jsonv2&limit=1";
 
-            const response = await fetch(url, {
-                headers: {
-                    "Accept": "application/json"
-                }
-            });
+            const response = await fetch(url);
 
             const data = await response.json();
 
@@ -61,25 +80,49 @@ const Geocoder = {
 
                 name: data[0].display_name,
 
-                lat: parseFloat(data[0].lat),
+                lat: Number(data[0].lat),
 
-                lon: parseFloat(data[0].lon)
+                lon: Number(data[0].lon)
 
             };
 
         }
 
-        catch (error) {
+        catch (e) {
 
             return {
 
                 success: false,
 
-                message: error.message
+                message: e.message
 
             };
 
         }
+
+    },
+
+    async fromGoogle(url) {
+
+        return {
+
+            success: false,
+
+            message: "Google Maps parser will be added in Sprint 1.3"
+
+        };
+
+    },
+
+    async fromApple(url) {
+
+        return {
+
+            success: false,
+
+            message: "Apple Maps parser will be added in Sprint 1.3"
+
+        };
 
     }
 
