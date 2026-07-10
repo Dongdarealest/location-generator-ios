@@ -5,6 +5,8 @@
     border-radius: 12px;
     overflow: hidden;
     background: #0d1117;
+    /* Hiệu ứng đổ bóng nhẹ cho hộp terminal ngầu hơn */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
 }
 
 .terminal-header {
@@ -22,48 +24,50 @@
     padding: 18px;
     font-family: "JetBrains Mono", monospace;
     font-size: 14px;
-    color: #3fb950;
+    color: #e6edf3; /* Đổi màu chữ mặc định sang trắng xám, chỉ đổi màu khi có class success/error */
     white-space: pre-wrap;
     overflow-y: auto;
     line-height: 1.8;
 }
 
-.terminal-output::after {
-    content: "▋";
-    animation: blink 1s infinite;
-    color: #58a6ff;
-}
-
-@keyframes blink {
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
+/* ĐÃ XÓA đoạn .terminal-output::after cũ để con trỏ không bị kẹt ở đáy thùng */
 
 .terminal-line {
     margin-bottom: 6px;
+    word-break: break-all;
 }
 
+/* --- CON TRỎ ĐỘNG NHẤP NHÁY BÁM THEO CHỮ --- */
+.terminal-line.typing::after {
+    content: "▋";
+    animation: blink 0.8s step-end infinite;
+    margin-left: 4px;
+    font-size: 13px;
+    vertical-align: baseline;
+}
+
+@keyframes blink {
+    from, to { opacity: transparent; }
+    50% { opacity: 1; }
+}
+
+/* --- MÀU SẮC ĐỒNG BỘ CHO CHỮ VÀ CON TRỎ --- */
 .terminal-success {
     color: #3fb950;
+    text-shadow: 0 0 4px rgba(63, 185, 80, 0.4); /* Tạo hiệu ứng ánh sáng đèn neon nhẹ */
 }
 
 .terminal-warning {
     color: #d29922;
+    text-shadow: 0 0 4px rgba(210, 153, 34, 0.4);
 }
 
 .terminal-error {
     color: #f85149;
+    text-shadow: 0 0 4px rgba(248, 81, 73, 0.4);
 }
 
 .terminal-info {
     color: #58a6ff;
+    text-shadow: 0 0 4px rgba(88, 166, 255, 0.4);
 }
