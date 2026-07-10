@@ -7,22 +7,22 @@
     background: #0d1117;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     
-    /* CỐ ĐỊNH CHIỀU CAO: Giúp Terminal gọn gàng, không đẩy giao diện xuống quá sâu */
+    /* Giữ chiều cao gọn gàng để lộ phần module bên dưới */
     height: 180px; 
     padding: 14px;
     font-family: "JetBrains Mono", monospace;
     font-size: 13px;
     white-space: pre-wrap;
-    overflow-y: auto; /* Kích hoạt cuộn tự động bên trong hộp terminal */
-    line-height: 1.6;
+    overflow-y: auto;
+    line-height: 1.7;
     scroll-behavior: smooth;
 }
 
-/* Định dạng chung từng dòng */
+/* Định dạng dòng mặc định (Màu trắng xám dễ đọc) */
 .terminal-line {
     margin-bottom: 5px;
     word-break: break-all;
-    color: #c9d1d9; /* Màu chữ mặc định (Trắng xám) */
+    color: #c9d1d9;
 }
 
 /* Hiệu ứng con trỏ nhấp nháy động bám chữ */
@@ -38,24 +38,22 @@
     50% { opacity: 1; }
 }
 
-/* --- PHÂN TÁCH MÀU SẮC ĐẲNG CẤP TERMINAL --- */
+/* --- PHỐI MÀU TINH TẾ --- */
 
-/* Dòng thông tin hệ thống [SYS], [NET], [IO]: Màu xanh cyan công nghệ */
+/* 1. Các dòng hành động hệ thống: Màu xanh dương công nghệ */
 .terminal-info {
     color: #58a6ff;
 }
 
-/* Dòng trạng thái thành công (✓): Màu xanh lá mượt mà */
+/* 2. Các dòng trạng thái thành công chốt hạ: Màu xanh lá */
 .terminal-success {
     color: #3fb950;
-    text-shadow: 0 0 4px rgba(63, 185, 80, 0.2);
 }
 
-/* LÀM NỔI BẬT DỮ LIỆU: Đổi màu cho các dòng chứa kết quả biến số thực tế */
-/* Hệ thống tự động nhận diện các dòng success chứa tọa độ/tên để đổi sang màu cam vàng xịn */
-.terminal-success:not(:contains("ready")):not(:contains("successfully")) {
-    color: #f2cc60; 
-    text-shadow: 0 0 4px rgba(242, 204, 96, 0.2);
+/* 3. ĐIỂM NHẤN CỐT LÕI: Nhuộm màu vàng cho riêng dòng chứa dữ liệu tọa độ và địa danh */
+/* Thẻ CSS này tự động lọc các dòng success chứa thông tin kết quả để đổi màu */
+.terminal-success[class*="terminal-success"]:not(:contains("ready")):not(:contains("generated")) {
+    color: #f2cc60;
 }
 
 .terminal-warning {
