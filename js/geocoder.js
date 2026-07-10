@@ -104,26 +104,130 @@ const Geocoder = {
 
     async fromGoogle(url) {
 
+    try {
+
+        let lat = null;
+
+        let lon = null;
+
+        const at = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+
+        if (at) {
+
+            lat = Number(at[1]);
+
+            lon = Number(at[2]);
+
+        }
+
+        if (lat === null) {
+
+            const u = new URL(url);
+
+            const q = u.searchParams.get("q");
+
+            if (q && Utils.isCoordinate(q)) {
+
+                const p = q.split(",");
+
+                lat = Number(p[0]);
+
+                lon = Number(p[1]);
+
+            }
+
+        }
+
+        if (lat === null) {
+
+            return {
+
+                success: false,
+
+                message: "Google Maps URL doesn't contain coordinates."
+
+            };
+
+        }
+
         return {
 
-            success: false,
+            success: true,
 
-            message: "Google Maps parser will be added in Sprint 1.3"
+            type: "google",
 
-        };
+            name: "Google Maps",
 
-    },
+            lat,
 
-    async fromApple(url) {
-
-        return {
-
-            success: false,
-
-            message: "Apple Maps parser will be added in Sprint 1.3"
+            lon
 
         };
 
     }
 
-};
+    catch {
+
+        return {
+
+            success: false,
+
+            message: "Invalid Google Maps URL."
+
+        };
+
+    }
+
+},
+
+    async fromApple(url) {
+
+    try {
+
+        const u = new URL(url);
+
+        const ll = u.searchParams.get("ll");
+
+        if (!ll) {
+
+            return {
+
+                success: false,
+
+                message: "Apple Maps URL doesn't contain coordinates."
+
+            };
+
+        }
+
+        const parts = ll.split(",");
+
+        return {
+
+            success: true,
+
+            type: "apple",
+
+            name: "Apple Maps",
+
+            lat: Number(parts[0]),
+
+            lon: Number(parts[1])
+
+        };
+
+    }
+
+    catch {
+
+        return {
+
+            success: false,
+
+            message: "Invalid Apple Maps URL."
+
+        };
+
+    }
+
+},
