@@ -42,12 +42,7 @@ const Terminal = {
         const total = 20;
 
         while (current <= total) {
-            line.textContent =
-                "[" +
-                "█".repeat(current) +
-                "░".repeat(total - current) +
-                "] " + Math.floor((current / total) * 100) + "%";
-
+            line.textContent = "[" + "█".repeat(current) + "░".repeat(total - current) + "] " + Math.floor((current / total) * 100) + "%";
             this.output.scrollTop = this.output.scrollHeight;
 
             let progressDelay = 20 + Math.random() * 30;
@@ -71,7 +66,6 @@ const Terminal = {
         await this.write("✓ " + text, "terminal-success", 80);
     },
 
-    // Hàm xuất dữ liệu màu vàng hổ phách nổi bật kết quả
     async data(text) {
         await this.write("✓ " + text, "terminal-data", 80);
     },
