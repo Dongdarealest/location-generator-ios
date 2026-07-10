@@ -6,9 +6,15 @@ const Terminal = {
 
     init() {
 
-        this.output = document.getElementById("terminal");
+    this.output = document.getElementById("terminal");
 
-    },
+    if (!this.output) {
+
+        console.error("Terminal element not found.");
+
+    }
+
+},
 
     async reset() {
 
