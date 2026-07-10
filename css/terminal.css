@@ -7,7 +7,7 @@
     background: #0d1117;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     
-    /* Giữ chiều cao gọn gàng để lộ phần module bên dưới */
+    /* Chiều cao cố định gọn gàng để lộ phần lấy module bên dưới */
     height: 180px; 
     padding: 14px;
     font-family: "JetBrains Mono", monospace;
@@ -18,11 +18,10 @@
     scroll-behavior: smooth;
 }
 
-/* Định dạng dòng mặc định (Màu trắng xám dễ đọc) */
 .terminal-line {
     margin-bottom: 5px;
     word-break: break-all;
-    color: #c9d1d9;
+    color: #c9d1d9; /* Màu chữ mặc định (Trắng xám) */
 }
 
 /* Hiệu ứng con trỏ nhấp nháy động bám chữ */
@@ -38,22 +37,18 @@
     50% { opacity: 1; }
 }
 
-/* --- PHỐI MÀU TINH TẾ --- */
-
-/* 1. Các dòng hành động hệ thống: Màu xanh dương công nghệ */
+/* --- ĐỊNH NGHĨA MÀU SẮC PHÂN CHIA HỆ THỐNG --- */
 .terminal-info {
-    color: #58a6ff;
+    color: #58a6ff; /* Màu xanh dương công nghệ */
 }
 
-/* 2. Các dòng trạng thái thành công chốt hạ: Màu xanh lá */
 .terminal-success {
-    color: #3fb950;
+    color: #3fb950; /* Màu xanh lá hoàn tất */
 }
 
-/* 3. ĐIỂM NHẤN CỐT LÕI: Nhuộm màu vàng cho riêng dòng chứa dữ liệu tọa độ và địa danh */
-/* Thẻ CSS này tự động lọc các dòng success chứa thông tin kết quả để đổi màu */
-.terminal-success[class*="terminal-success"]:not(:contains("ready")):not(:contains("generated")) {
-    color: #f2cc60;
+.terminal-data {
+    color: #f2cc60; /* Màu vàng hoàng kim làm nổi bật tọa độ / địa danh */
+    text-shadow: 0 0 4px rgba(242, 204, 96, 0.15);
 }
 
 .terminal-warning {
