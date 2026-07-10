@@ -2,21 +2,14 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Location Generator iOS</title>
+    
+    <link rel="stylesheet" href="css/style.css?v=1.2">
+    <link rel="stylesheet" href="css/terminal.css?v=1.2">
 
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- Leaflet -->
-
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 
 <body>
@@ -26,26 +19,21 @@
         <h1>Location Generator iOS</h1>
 
         <div class="input-area">
-
             <input
                 id="locationInput"
                 type="text"
                 placeholder="Enter location, coordinates, Google Maps or Apple Maps URL">
 
             <button id="generateButton">
-
                 Generate
-
             </button>
-
         </div>
 
-        <div id="terminal" class="terminal"></div>
+        <div id="terminal" class="terminal notranslate" translate="no"></div>
 
         <div id="map"></div>
 
         <h2>Generated Module</h2>
-
         <pre id="generatedFile"></pre>
 
     </div>
@@ -61,5 +49,4 @@
     <script src="js/app.js"></script>
 
 </body>
-
 </html>
