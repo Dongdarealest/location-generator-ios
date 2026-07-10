@@ -1,3 +1,4 @@
+/* Biến thẻ #terminal gốc thành một hộp Terminal hoàn chỉnh */
 .terminal {
     margin-top: 35px;
     margin-bottom: 35px;
@@ -5,39 +6,26 @@
     border-radius: 12px;
     overflow: hidden;
     background: #0d1117;
-    /* Hiệu ứng đổ bóng nhẹ cho hộp terminal ngầu hơn */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
-}
-
-.terminal-header {
-    background: #161b22;
-    border-bottom: 1px solid #30363d;
-    padding: 12px 18px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #8b949e;
-    letter-spacing: .5px;
-}
-
-.terminal-output {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    
+    /* Thiết lập cho phần hiển thị chữ */
     min-height: 220px;
     padding: 18px;
     font-family: "JetBrains Mono", monospace;
     font-size: 14px;
-    color: #e6edf3; /* Đổi màu chữ mặc định sang trắng xám, chỉ đổi màu khi có class success/error */
     white-space: pre-wrap;
     overflow-y: auto;
     line-height: 1.8;
 }
 
-/* ĐÃ XÓA đoạn .terminal-output::after cũ để con trỏ không bị kẹt ở đáy thùng */
-
+/* Định dạng từng dòng lệnh được sinh ra */
 .terminal-line {
     margin-bottom: 6px;
     word-break: break-all;
 }
 
-/* --- CON TRỎ ĐỘNG NHẤP NHÁY BÁM THEO CHỮ --- */
+/* --- TẠO CON TRỎ NHẤP NHÁY ĐỘNG BÁM THEO CHỮ --- */
+/* Class 'typing' được sinh ra từ file terminal.js của bạn sẽ kích hoạt hiệu ứng này */
 .terminal-line.typing::after {
     content: "▋";
     animation: blink 0.8s step-end infinite;
@@ -47,27 +35,27 @@
 }
 
 @keyframes blink {
-    from, to { opacity: transparent; }
+    from, to { opacity: 0; }
     50% { opacity: 1; }
 }
 
-/* --- MÀU SẮC ĐỒNG BỘ CHO CHỮ VÀ CON TRỎ --- */
+/* --- ĐỊNH DẠNG MÀU SẮC ĐỒNG BỘ CHO CHỮ VÀ CON TRỎ --- */
 .terminal-success {
     color: #3fb950;
-    text-shadow: 0 0 4px rgba(63, 185, 80, 0.4); /* Tạo hiệu ứng ánh sáng đèn neon nhẹ */
+    text-shadow: 0 0 4px rgba(63, 185, 80, 0.3);
 }
 
 .terminal-warning {
     color: #d29922;
-    text-shadow: 0 0 4px rgba(210, 153, 34, 0.4);
+    text-shadow: 0 0 4px rgba(210, 153, 34, 0.3);
 }
 
 .terminal-error {
     color: #f85149;
-    text-shadow: 0 0 4px rgba(248, 81, 73, 0.4);
+    text-shadow: 0 0 4px rgba(248, 81, 73, 0.3);
 }
 
 .terminal-info {
     color: #58a6ff;
-    text-shadow: 0 0 4px rgba(88, 166, 255, 0.4);
+    text-shadow: 0 0 4px rgba(88, 166, 255, 0.3);
 }
