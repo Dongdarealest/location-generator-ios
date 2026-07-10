@@ -25,7 +25,6 @@ const Terminal = {
         
         this.output.scrollTop = this.output.scrollHeight;
 
-        // Nhịp dừng cực ngắn của CPU để dòng chữ sau không bị dính liền vào dòng trước
         await this.sleep(delay);
         line.classList.remove("typing");
     },
@@ -51,7 +50,6 @@ const Terminal = {
 
             this.output.scrollTop = this.output.scrollHeight;
 
-            // Thanh % chạy giật cục ngẫu nhiên y như đang đọc đĩa cứng thật
             let progressDelay = 20 + Math.random() * 30;
             if (current === 4 || current === 11 || current === 17) {
                 progressDelay = 200 + Math.random() * 150; 
@@ -71,6 +69,11 @@ const Terminal = {
 
     async success(text) {
         await this.write("✓ " + text, "terminal-success", 80);
+    },
+
+    // Hàm xuất dữ liệu màu vàng hổ phách nổi bật kết quả
+    async data(text) {
+        await this.write("✓ " + text, "terminal-data", 80);
     },
 
     async warning(text) {
